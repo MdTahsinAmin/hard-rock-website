@@ -31,7 +31,7 @@ function catchAndSetSong(data){
                     </div>
                     <div class="col-md-3 text-md-right text-center">
                       <img style ="margin-bottom:5px; width =10px; height ="10px;" class="img-fluid rounded-circle" src="${element.artist.picture}" alt="">
-                        <button class="btn btn-success" data-songTitle="${element.title}" data-artist="${element.artist.name}">Get Lyrics</button>
+                        <button href="#goToBottom "class="btn btn-success" data-songTitle="${element.title}" data-artist="${element.artist.name}">Get Lyrics</button>
                     </div>
                 </div>`
      });
@@ -43,6 +43,7 @@ function catchAndSetSong(data){
 
 function getLyrics(artist,songTitle){
     //https://api.lyrics.ovh/v1/artist/title
+    
     fetch(`${apiUrl.baseUrl}/v1/${artist}/${songTitle}`)
      .then(response => response.json())
      .then(data => showLyrics(data,artist,songTitle));
@@ -65,9 +66,14 @@ function showLyrics(data,artist,songTitle){
     //console.log(data);
    const lyricsPart =  document.querySelector('.single-lyrics');
    lyricsPart.style.display ="block";
+   if(data.lyrics){
    lyricsPart.innerHTML =`<button class="btn go-back">&lsaquo;</button>
                 <h2 class="text-success mb-4">${artist} - ${songTitle}</h2>
-                <pre class="lyric text-white">${data.lyrics}</pre>`;
-
-
+                <pre id="goToBottom" class="lyric text-white">${data.lyrics}</pre>`;
+   }
+   else{
+        lyricsPart.innerHTML =`<button class="btn go-back">&lsaquo;</button>
+                <h2 class="text-success mb-4">${artist} - ${songTitle}</h2>
+                <pre id="goToBottom" class="lyric text-white">Lyrics Not Found (404)!</pre>`;
+   }
 }
